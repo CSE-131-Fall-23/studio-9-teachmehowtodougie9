@@ -10,7 +10,7 @@ public class Polynomial {
 	 * Constructs a Polynomial with no terms yet.
 	 */
 	public Polynomial() {
-		//FIXME
+		this.list = new LinkedList<>();
 	}
 
 	
@@ -20,7 +20,7 @@ public class Polynomial {
 	 * @return polynomial with added term
 	 */
 	public void addTerm(double coeff) {
-		//FIXME
+		list.add(coeff);
 	}
 	
 	/*
@@ -29,7 +29,21 @@ public class Polynomial {
 	 * Cx^N + Cx^N-1 + ... + Cx + C
 	 */
 	public String toString() {
-		return ""; //FIXME
+		String result = "";
+		int N = list.size()-1;
+		for (int i = 0; i<list.size(); i++) {
+			if (N>1) {
+				result = result + list.get(i) + "x^" + (N) + " + ";
+			} else if(N==1) {
+				result = result + list.get(i) + "x" + " + ";
+			} else {
+				result = result + list.get(i); 
+			}
+			N --;
+		
+			
+		}
+		return result; 
 	}
 	
 	/**
@@ -38,12 +52,37 @@ public class Polynomial {
 	 * @return value of polynomial at that x
 	 */
 	public double evaluate(double x) {
-		return 0;//FIXME
+		double result = 0;
+		int N = list.size()-1;
+		for (int i = 0; i<list.size(); i++) {
+			if (N>1) {
+				result = result + list.get(i) * Math.pow(x, N);
+			} else if(N==1) {
+				result = result + list.get(i) * x;
+			} else {
+				result = result + list.get(i); 
+			}
+			N --;
+		
+			
+		}
+		return result; 
 	}
 
 	
 	public Polynomial derivative() {
-		return null;//FIXME
+		Polynomial result = new Polynomial(); 
+		for (int i=0; i<list.size()-1; i++) {
+			result.addTerm(list.get(i));
+		}
+		int N = list.size()-1;
+		for (int i = 0; i<list.size(); i++) {
+			if (N>=1) {
+				result.list.set(i, list.get(i)*N);
+			} 
+			N --;	
+		}
+		return result;
 	}
 	
 
@@ -95,6 +134,19 @@ public class Polynomial {
 		//   that the elements in each list agree.
 
 		return this.list.equals(other.list);
+	}
+	
+	public static void main(String[] args) {
+		Polynomial test = new Polynomial();
+		test.addTerm(5);
+		test.addTerm(3);
+		test.addTerm(2);
+		test.addTerm(8);
+		String testprint = test.toString();
+		System.out.println(testprint);
+		Polynomial testderivative = test.derivative();
+		String testderivativeprint = testderivative.toString();
+		System.out.println(testderivativeprint);
 	}
 
 }
